@@ -1,3 +1,4 @@
+language: generic 
 sudo: required
 services:
   - docker
@@ -6,7 +7,7 @@ before_install:
   - docker build -t eyelin/react-test -f ./client/Dockerfile.dev ./client 
 
 script:
-  - docker run -e CI=true eyelin/react-test npm run test -- ----coverage
+  - docker run -e CI=true eyelin/react-test npm run test
 
 #construir las versiones de produccion
 after_success:
