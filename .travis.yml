@@ -1,0 +1,25 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t eyelin/react-test -f ./client/Dockerfile.dev ./client 
+
+script:
+  - docker run -e CI=true eyelin/react-test npm run test -- ----coverage
+
+#construir las versiones de produccion
+after_success:
+  - docker build -t eyelin/multi-client ./client 
+  - docker build -t eyelin/multi-nginx ./nginx 
+  - docker build -t eyelin/multi-server ./server
+  - docker build -t eyelin/multi-worker ./worker
+
+#exportar las imagenes a Docker Hub
+#log in en docker CLI, pero no podemos poner nusta cosntaseña en texto plano
+#tenemos que encriptarlas para que solo travis las vea
+  - echo "DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push eyelin/multi-client
+  - docker push eyelin/multi-nginx
+  - docker push eyelin/multi-server
+  - docker push eyelin/multi-worker
