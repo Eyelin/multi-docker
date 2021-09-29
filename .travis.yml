@@ -16,10 +16,10 @@ after_success:
   - docker build -t eyelin/multi-server ./server
   - docker build -t eyelin/multi-worker ./worker
 
-#exportar las imagenes a Docker Hub
 #log in en docker CLI, pero no podemos poner nusta cosntaseña en texto plano
 #tenemos que encriptarlas para que solo travis las vea
-  - echo "DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+#exportar las imagenes a Docker Hub
   - docker push eyelin/multi-client
   - docker push eyelin/multi-nginx
   - docker push eyelin/multi-server
