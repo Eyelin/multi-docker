@@ -9,7 +9,7 @@ before_install:
 script:
   - docker run -e CI=true eyelin/react-test npm run test
 
-#construir las versiones de produccion ---y esto es una gran prueba remotely and locally also
+#construir las versiones de produccion
 after_success:
   - docker build -t eyelin/multi-client ./client
   - docker build -t eyelin/multi-nginx ./nginx
